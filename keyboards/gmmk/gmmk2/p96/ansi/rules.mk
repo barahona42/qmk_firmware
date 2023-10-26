@@ -13,3 +13,6 @@ AUDIO_ENABLE = no            # Audio output.
 RGB_MATRIX_ENABLE = yes      # Enable RGB matrix effects.
 EEPROM_DRIVER = wear_leveling
 WEAR_LEVELING_DRIVER = spi_flash
+
+# STUFF I'VE ADDED
+# COMBO_ENABLE = yes

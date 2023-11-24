@@ -122,6 +122,10 @@ class Keyboard:
         print(wrapper_lines[1])
 
 
+class DSP40(Keyboard):
+    pass
+
+
 class QMMK2(Keyboard):
     def fmt_row_15(self, row, max_key_len):
         buff = io.StringIO("")

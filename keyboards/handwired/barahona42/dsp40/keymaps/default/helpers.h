@@ -27,5 +27,7 @@ enum custom_layers {
     _BASE,
     _LOWER,
     _RAISE,
-    _FN
+    _NAV,
+    _FN,
+    _SYM
 };

@@ -6,16 +6,16 @@
 
 // #define LCTL_LGUI(keycode)SS_DOWN(X_LCTL)SS_DOWN(X_LGUI)SS_TAP(keycode)SS_UP(X_LCTL)SS_UP(X_LGUI)
 
-
-
-const uint16_t PROGMEM combo_raise[] = {CK_RAISE, COMBO_END};
-const uint16_t PROGMEM combo_lower[] = {CK_LOWER, COMBO_END};
-const uint16_t PROGMEM combo_fn[]= {CK_RAISE,CK_LOWER, COMBO_END};
+const uint16_t PROGMEM combo_eql_del[]   = {KC_EQL, KC_DEL, COMBO_END};
+const uint16_t PROGMEM combo_rprn_eql[] = {KC_RPRN, KC_EQL, COMBO_END};
+const uint16_t PROGMEM combo_rbrc_bsls[] = {KC_RBRC, KC_BSLS, COMBO_END};
+const uint16_t PROGMEM combo_lbrc_rbrc[] = {KC_LBRC, KC_RBRC, COMBO_END};
 
 combo_t key_combos[] = {
-    COMBO(combo_raise, MO(_RAISE)),
-    COMBO(combo_lower, MO(_LOWER)),
-    COMBO(combo_fn, MO(_FN))
+    COMBO(combo_eql_del, KC_F12),
+    COMBO(combo_rprn_eql, S(KC_F12)),
+    COMBO(combo_rbrc_bsls, LCTL(LALT(KC_COMM))),
+    COMBO(combo_lbrc_rbrc, LCTL(LALT(KC_DOT)))
 };
 
 bool handle_tap(keyrecord_t *record, char *keycode) {
@@ -70,18 +70,30 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,    _______,    _______,    _______,     _______,     _______,   _______,     _______,     _______,       KC_7,        KC_8,      KC_9,
         _______,    _______,    _______,    _______,     _______,     _______,   _______,     _______,     _______,       KC_4,        KC_5,      KC_6,
         _______,    _______,    _______,    _______,     _______,     _______,   _______,     _______,     _______,       KC_1,        KC_2,      KC_3,
-        _______,    _______,    _______,    _______,     _______,     _______,   _______,     _______,     MO(_FN),       KC_0,        _______,   _______
+        _______,    _______,    _______,    _______,     _______,     _______,   _______,     _______,     MO(_NAV),       KC_0,        _______,   _______
     ),
     [_RAISE] = LAYOUT_ortho_4x12(
         KC_GRV,     _______,    KC_UP,      _______,     KC_PERC,     KC_CIRC,   KC_AMPR,     KC_ASTR,     KC_LPRN,       KC_RPRN,    KC_EQL,     KC_DEL,
-        _______,    KC_LEFT,    KC_DOWN,    KC_RIGHT,    KC_AT,       KC_HASH,   _______,     KC_MINS,     KC_AMPR,       KC_LBRC,    KC_RBRC,    KC_BSLS,
-        _______,    _______,    _______,    _______,     KC_UNDS,     _______,   _______,     KC_EXLM,     KC_DLR,        _______,    _______,    KC_PIPE,
-        _______,    _______,    _______,    MO(_FN),     _______,     _______,   _______,     _______,     _______,       _______,    _______,    _______
+        _______,    KC_LEFT,    KC_DOWN,    KC_RIGHT,    KC_AT,       KC_HASH,   KC_PIPE,     KC_MINS,     KC_AMPR,       KC_LBRC,    KC_RBRC,    KC_BSLS,
+        _______,    _______,    _______,    _______,     KC_UNDS,     _______,   _______,     KC_EXLM,     KC_DLR,        _______,    _______,    MO(_FN),
+        _______,    _______,    _______,    MO(_NAV),     _______,     _______,   _______,     _______,     _______,      _______,    _______,    _______
+    ),
+    [_NAV] = LAYOUT_ortho_4x12(
+        QK_BOOT,    _______,    CGUIU,      _______,    _______,      _______,   _______,     _______,     _______,       _______,    _______,    _______,
+        _______,    CGUIL,      CGUID,      CGUIR,      _______,      _______,   _______,     _______,     _______,       _______,    _______,    _______,
+        _______,    _______,    _______,    _______,    _______,      _______,   _______,     _______,     _______,       _______,    _______,    _______,
+        _______,    _______,    _______,    _______,    _______,      _______,   _______,     _______,     _______,       _______,    _______,    _______
     ),
     [_FN] = LAYOUT_ortho_4x12(
-        QK_BOOT,    _______,    CGUIU,      _______,    _______,      _______,   _______,     KC_F7,       KC_F8,         KC_F9,      KC_F12,     CGUI1,
-        _______,    CGUIL,      CGUID,      CGUIR,      _______,      _______,   _______,     KC_F4,       KC_F5,         KC_F6,      KC_F11,     CGUI2,
-        KC_CAPS,    _______,    _______,    _______,    _______,      _______,   _______,     KC_F1,       KC_F2,         KC_F3,      KC_F10,     CGUI7,
-        _______,    _______,    _______,    _______,    _______,      _______,   _______,     _______,     _______,       _______,    _______,    CGUI0
+        KC_F1,      KC_F2,      KC_F3,      KC_F4,       KC_F5,       KC_F6,     KC_F7,       KC_F8,       KC_F9,         KC_F10,      KC_F11,    KC_F12,
+        _______,    _______,    _______,    _______,     _______,     _______,   _______,     _______,     _______,       _______,     _______,   _______,
+        KC_CAPS,    _______,    _______,    _______,     _______,     _______,   _______,     _______,     _______,       _______,     _______,   _______,
+        _______,    _______,    _______,    _______,     _______,     _______,   _______,     _______,     _______,       _______,     _______,   _______
+    ),
+    [_SYM] = LAYOUT_ortho_4x12(
+        KC_1,       KC_2,       KC_3,       KC_4,        KC_5,        KC_6,      KC_7,        KC_8,        KC_9,          KC_0,        KC_MINS,   KC_EQL,
+        _______,    _______,    _______,    _______,     _______,     _______,   _______,     _______,     _______,       _______,     _______,   _______,
+        _______,    _______,    _______,    _______,     _______,     _______,   _______,     _______,     _______,       _______,     _______,   _______,
+        _______,    _______,    _______,    _______,     _______,     _______,   _______,     _______,     _______,       _______,     _______,   _______
     )
 };

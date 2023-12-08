@@ -15,7 +15,7 @@
     "diode_direction": "COL2ROW",
     "encoder": {
         "rotary": [
-            {"pin_a": "A1", "pin_b": "A2"}
+            {"pin_a": "A2", "pin_b": "A1"}
         ]
     },
     "qmk": {
@@ -23,7 +23,7 @@
     },
     "backlight": {
         "pin": "A6",
-        "levels": 7
+        "levels": 25
     },
     "rgblight": {
         "saturation_steps": 8,

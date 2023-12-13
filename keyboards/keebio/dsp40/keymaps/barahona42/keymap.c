@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "encoder.h"
 
 #define LCTL_LGUI(keycode)SS_DOWN(X_LCTL)SS_DOWN(X_LGUI)SS_TAP(keycode)SS_UP(X_LCTL)SS_UP(X_LGUI)
-
+#define LCTL_LALT(keycode)SS_DOWN(X_LCTL)SS_DOWN(X_LALT)SS_TAP(keycode)SS_UP(X_LCTL)SS_UP(X_LALT)
 
 enum custom_keycodes {
     CGUIL = SAFE_RANGE,
@@ -39,6 +39,8 @@ enum custom_keycodes {
     CGUI8,
     CGUI9,
     CGUI0,
+    CACOM,
+    CADOT,
     CK_RAISE,
     CK_LOWER,
 };
@@ -102,6 +104,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return handle_tap(record, LCTL_LGUI(X_9));
         case CGUI0:
             return handle_tap(record, LCTL_LGUI(X_0));
+        case CACOM:
+            return handle_tap(record, LCTL_LALT(X_COMM));
+        case CADOT:
+            return handle_tap(record, LCTL_LALT(X_DOT));
     }
     return true;
 };
@@ -116,14 +122,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [_LOWER] = LAYOUT_ortho_4x12(
         _______,     KC_1,       KC_2,       KC_3,        KC_4,        KC_5,      KC_6,        KC_7,        KC_8,          KC_9,       KC_0,       _______,
-        KC_ESC,     KC_PLUS,    KC_EQL,     KC_TILD,     KC_MINS,     KC_UNDS,   _______,     KC_BSLS,     KC_PIPE,       KC_LBRC,    KC_RBRC,    _______,
+        KC_ESC,     KC_PLUS,    KC_EQL,     KC_TILD,     KC_MINS,     KC_UNDS,    _______,     KC_BSLS,     KC_PIPE,       KC_LBRC,    KC_RBRC,    _______,
         KC_LSFT,     KC_EXLM,    KC_AT,      KC_HASH,     KC_DLR,      KC_PERC,   KC_CIRC,     KC_AMPR,     KC_ASTR,       KC_LPRN,    KC_RPRN,    _______,
         _______,     _______,    _______,    _______,     _______,     _______,   _______,     _______,     MO(_FN1),      _______,    _______,    _______
     ),
     [_RAISE] = LAYOUT_ortho_4x12(
         BL_TOGG,     KC_HOME,    KC_UP,      KC_END,      KC_PGUP,     _______,   _______,     _______,     KC_LPRN,       KC_RPRN,       _______,    KC_DEL,
-        KC_GRV,     KC_LEFT,    KC_DOWN,    KC_RIGHT,    KC_PGDN,     _______,   _______,     _______,      KC_LBRC,       KC_RBRC,       _______,    _______,
-        _______,     _______,    _______,    _______,     _______,     _______,   _______,     _______,     KC_LCBR,       KC_RCBR,       _______,    _______,
+        KC_GRV,      KC_LEFT,    KC_DOWN,    KC_RIGHT,    KC_PGDN,     _______,   _______,     _______,     KC_LBRC,       KC_RBRC,       _______,    _______,
+        _______,     KC_F12,     CACOM,      CADOT,       _______,     _______,   _______,     _______,     KC_LCBR,       KC_RCBR,       _______,    _______,
         _______,     _______,    _______,    MO(_FN1),    _______,     _______,   _______,     _______,     _______,       TG(_FKEYS),    _______,    _______
     ),
     [_FN1] = LAYOUT_ortho_4x12(
@@ -136,22 +142,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_MPLY,     KC_F1,      KC_F2,      KC_F3,       KC_F4,       _______,   _______,     _______,     _______,       _______,    KC_MPRV,    KC_MNXT,
         _______,     KC_F5,      KC_F6,      KC_F7,       KC_F8,       _______,   _______,     _______,     _______,       _______,    _______,    _______,
         _______,     KC_F9,      KC_F10,     KC_F11,      KC_F12,      _______,   _______,     _______,     _______,       _______,    _______,    _______,
-        _______,     _______,    _______,    _______,     _______,     _______,   _______,     _______,     _______,       _______,    _______,    _______
+        _______,     _______,    _______,    _______,     _______,     _______,   _______,     _______,     _______,       TG(_FKEYS),    _______,    _______
     ),
     [_NUMPAD] = LAYOUT_ortho_4x12(
-        _______,     _______,    _______,    _______,     _______,     KC_SLSH,       KC_7,       KC_8,       KC_9,        _______,   _______,     KC_BSPC,
-        _______,     _______,    _______,    _______,     _______,     KC_ASTR,       KC_4,       KC_5,       KC_6,        _______,   _______,     _______,
-        _______,     _______,    _______,    _______,     _______,     KC_MINS,       KC_1,       KC_2,       KC_3,        _______,   _______,     _______,
-        TG(_NUMPAD), _______,    _______,    _______,     _______,     KC_SPC,        KC_SPC,     KC_0,       KC_DOT,      _______,   _______,     _______
+        _______,     CGUI1,    CGUI2,    CGUI3,     _______,     _______,   KC_SLSH,     KC_7,        KC_8,          KC_9,       _______,    KC_BSPC,
+        _______,     CGUI4,    CGUI5,    CGUI6,     _______,     _______,   KC_ASTR,     KC_4,        KC_5,          KC_6,       _______,    _______,
+        _______,     CGUI7,    CGUI8,    CGUI9,     _______,     _______,   KC_MINS,     KC_1,        KC_2,          KC_3,       _______,    _______,
+        TG(_NUMPAD), _______,  _______,  _______,   _______,     _______,   KC_SPC,      KC_SPC,      KC_0,          KC_DOT,     _______,    _______
     )
 };
 
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
-    [_BASE] =   { ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
-    [_LOWER] =  { ENCODER_CCW_CW(KC_WH_U, KC_WH_D)},
-    [_RAISE] =  { ENCODER_CCW_CW(BL_DOWN, BL_UP)},
-    [_FN1] = { ENCODER_CCW_CW(CGUIL, CGUIR)},
-    [_FKEYS] = { ENCODER_CCW_CW(_______, _______)},
-    [_NUMPAD] = { ENCODER_CCW_CW(_______, _______)}
+    [_BASE] = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
+    [_LOWER] =  { ENCODER_CCW_CW(KC_WH_U, KC_WH_D) },
+    [_RAISE] =  { ENCODER_CCW_CW(BL_DOWN, BL_UP) },
+    [_FN1] = { ENCODER_CCW_CW(CGUIL, CGUIR) },
+    [_FKEYS] = { ENCODER_CCW_CW(_______, _______) },
+    [_NUMPAD] = { ENCODER_CCW_CW(_______, _______) }
 };
 

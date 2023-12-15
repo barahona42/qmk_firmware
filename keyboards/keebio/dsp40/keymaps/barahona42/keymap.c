@@ -50,10 +50,14 @@ enum custom_layers {
     _LOWER,
     _RAISE,
     _FN1,
-    _FKEYS,
     _NUMPAD
 };
 
+enum custom_tapdances {
+    TD_LCPS = 0,
+    TD_RCPS,
+    TD_MDIA,
+};
 
 const uint16_t PROGMEM combo_rprn_eql[] = {KC_RPRN, KC_EQL, COMBO_END};
 const uint16_t PROGMEM combo_eql_del[]   = {KC_EQL, KC_DEL, COMBO_END};
@@ -112,43 +116,70 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return true;
 };
 
+void handle_td_media(tap_dance_state_t *state, void *user_data) {
+    switch (state->count) {
+        case 1:
+            register_code(KC_MPLY);
+            break;
+        case 2:
+            register_code(KC_MNXT);
+            break;
+        case 3:
+            register_code(KC_MPRV);
+            break;
+    }
+}
+
+void handle_td_media_reset(tap_dance_state_t *state, void *user_data) {
+    switch (state->count) {
+        case 1:
+            unregister_code(KC_MPLY);
+            break;
+        case 2:
+            unregister_code(KC_MNXT);
+            break;
+        case 3:
+            unregister_code(KC_MPRV);
+            break;
+    }
+}
+
+tap_dance_action_t tap_dance_actions[] = {
+    [TD_LCPS] = ACTION_TAP_DANCE_DOUBLE(KC_LSFT, KC_CAPS),
+    [TD_RCPS] = ACTION_TAP_DANCE_DOUBLE(KC_RSFT, KC_CAPS),
+    [TD_MDIA] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, handle_td_media, handle_td_media_reset)
+};
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_BASE] = LAYOUT_ortho_4x12(
-        KC_MPLY,     KC_Q,       KC_W,       KC_E,        KC_R,        KC_T,      KC_Y,        KC_U,        KC_I,          KC_O,       KC_P,       KC_BSPC,
+        TD(TD_MDIA), KC_Q,       KC_W,       KC_E,        KC_R,        KC_T,      KC_Y,        KC_U,        KC_I,          KC_O,       KC_P,       KC_BSPC,
         KC_TAB,      KC_A,       KC_S,       KC_D,        KC_F,        KC_G,      KC_H,        KC_J,        KC_K,          KC_L,       KC_SCLN,    KC_QUOT,
-        KC_LSFT,     KC_Z,       KC_X,       KC_C,        KC_V,        KC_B,      KC_N,        KC_M,        KC_COMM,       KC_DOT,     KC_SLSH,    KC_RSFT,
+        TD(TD_LCPS), KC_Z,       KC_X,       KC_C,        KC_V,        KC_B,      KC_N,        KC_M,        KC_COMM,       KC_DOT,     KC_SLSH,    TD(TD_RCPS),
         KC_LCTL,     KC_LALT,    KC_LGUI,    MO(_LOWER),  KC_SPC,      KC_SPC,    KC_SPC,      KC_SPC,      MO(_RAISE),    KC_RALT,    KC_RCTL,    KC_ENT
-
     ),
     [_LOWER] = LAYOUT_ortho_4x12(
         _______,     KC_1,       KC_2,       KC_3,        KC_4,        KC_5,      KC_6,        KC_7,        KC_8,          KC_9,       KC_0,       _______,
-        KC_ESC,     KC_PLUS,    KC_EQL,     KC_TILD,     KC_MINS,     KC_UNDS,    _______,     KC_BSLS,     KC_PIPE,       KC_LBRC,    KC_RBRC,    _______,
-        KC_LSFT,     KC_EXLM,    KC_AT,      KC_HASH,     KC_DLR,      KC_PERC,   KC_CIRC,     KC_AMPR,     KC_ASTR,       KC_LPRN,    KC_RPRN,    _______,
-        _______,     _______,    _______,    _______,     _______,     _______,   _______,     _______,     MO(_FN1),      _______,    _______,    _______
+        KC_ESC,      KC_EXLM,    KC_AT,      KC_HASH,     KC_DLR,      KC_PERC,   KC_CIRC,     KC_AMPR,     KC_ASTR,       KC_LPRN,    KC_RPRN,    _______,
+        _______,     _______,    _______,    _______,     _______,     _______,    _______,    _______,     _______,       _______,    _______,    _______,
+        TG(_NUMPAD), _______,    _______,    _______,     _______,     _______,   _______,     _______,     MO(_FN1),      _______,    _______,    _______
     ),
     [_RAISE] = LAYOUT_ortho_4x12(
-        BL_TOGG,     KC_HOME,    KC_UP,      KC_END,      KC_PGUP,     _______,   _______,     _______,     KC_LPRN,       KC_RPRN,       _______,    KC_DEL,
+        BL_TOGG,     KC_HOME,    KC_UP,      KC_END,      KC_PGUP,     _______,   _______,     _______,     KC_LPRN,       KC_RPRN,       KC_EQL,    KC_DEL,
         KC_GRV,      KC_LEFT,    KC_DOWN,    KC_RIGHT,    KC_PGDN,     _______,   _______,     _______,     KC_LBRC,       KC_RBRC,       _______,    _______,
-        _______,     KC_F12,     CACOM,      CADOT,       _______,     _______,   _______,     _______,     KC_LCBR,       KC_RCBR,       _______,    _______,
-        _______,     _______,    _______,    MO(_FN1),    _______,     _______,   _______,     _______,     _______,       TG(_FKEYS),    _______,    _______
+        _______,     KC_F12,     CACOM,      CADOT,       _______,     _______,   _______,     KC_MINS,     KC_LCBR,       KC_RCBR,       KC_BSLS,    _______,
+        _______,     _______,    _______,    MO(_FN1),    _______,     _______,   _______,     _______,     _______,       _______,    _______,    _______
     ),
     [_FN1] = LAYOUT_ortho_4x12(
-        _______,     _______,    CGUIU,      _______,     _______,     _______,   _______,     _______,     _______,       _______,    _______,    _______,
-        _______,     CGUIL,      CGUID,      CGUIR,       _______,     _______,   _______,     _______,     _______,       _______,    _______,    _______,
-        _______,     _______,    _______,    _______,     _______,     _______,   _______,     _______,     _______,       _______,    _______,    _______,
-        TG(_NUMPAD), _______,    _______,    _______,     _______,     _______,   _______,     _______,     _______,       _______,    _______,    QK_BOOT
-    ),
-    [_FKEYS] = LAYOUT_ortho_4x12(
-        KC_MPLY,     KC_F1,      KC_F2,      KC_F3,       KC_F4,       _______,   _______,     _______,     _______,       _______,    KC_MPRV,    KC_MNXT,
-        _______,     KC_F5,      KC_F6,      KC_F7,       KC_F8,       _______,   _______,     _______,     _______,       _______,    _______,    _______,
-        _______,     KC_F9,      KC_F10,     KC_F11,      KC_F12,      _______,   _______,     _______,     _______,       _______,    _______,    _______,
-        _______,     _______,    _______,    _______,     _______,     _______,   _______,     _______,     _______,       TG(_FKEYS),    _______,    _______
+        _______,     _______,    CGUIU,      _______,     _______,     _______,   _______,     CGUI1,       CGUI2,         CGUI3,      KC_MPRV,    KC_MNXT,
+        _______,     CGUIL,      CGUID,      CGUIR,       _______,     _______,   _______,     CGUI4,       CGUI5,         CGUI6,      _______,    _______,
+        _______,     _______,    _______,    _______,     _______,     _______,   _______,     CGUI7,       CGUI8,         CGUI9,      _______,    _______,
+        _______,     _______,    _______,    _______,     _______,     _______,   _______,     _______,     _______,       _______,    _______,    QK_BOOT
     ),
     [_NUMPAD] = LAYOUT_ortho_4x12(
-        _______,     CGUI1,    CGUI2,    CGUI3,     _______,     _______,   KC_SLSH,     KC_7,        KC_8,          KC_9,       _______,    KC_BSPC,
-        _______,     CGUI4,    CGUI5,    CGUI6,     _______,     _______,   KC_ASTR,     KC_4,        KC_5,          KC_6,       _______,    _______,
-        _______,     CGUI7,    CGUI8,    CGUI9,     _______,     _______,   KC_MINS,     KC_1,        KC_2,          KC_3,       _______,    _______,
-        TG(_NUMPAD), _______,  _______,  _______,   _______,     _______,   KC_SPC,      KC_SPC,      KC_0,          KC_DOT,     _______,    _______
+        _______,     KC_F1,      KC_F2,      KC_F3,       KC_F4,     _______,   KC_ASTR,     KC_7,        KC_8,          KC_9,       _______,    KC_BSPC,
+        _______,     KC_F5,      KC_F6,      KC_F7,       KC_F8,     _______,   KC_MINS,     KC_4,        KC_5,          KC_6,       _______,    _______,
+        _______,     KC_F9,      KC_F10,     KC_F11,      KC_F12,    _______,   KC_SLSH,     KC_1,        KC_2,          KC_3,       _______,    _______,
+        TG(_NUMPAD), _______,    _______,    _______,     _______,   _______,   KC_SPC,      KC_0,        KC_0,          KC_DOT,     _______,    _______
     )
 };
 
@@ -157,7 +188,7 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
     [_LOWER] =  { ENCODER_CCW_CW(KC_WH_U, KC_WH_D) },
     [_RAISE] =  { ENCODER_CCW_CW(BL_DOWN, BL_UP) },
     [_FN1] = { ENCODER_CCW_CW(CGUIL, CGUIR) },
-    [_FKEYS] = { ENCODER_CCW_CW(_______, _______) },
     [_NUMPAD] = { ENCODER_CCW_CW(_______, _______) }
 };
+
 

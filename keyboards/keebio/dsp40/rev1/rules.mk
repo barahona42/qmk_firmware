@@ -13,3 +13,4 @@ AUDIO_ENABLE = no           # Audio output
 ENCODER_ENABLE = yes
 ENCODER_MAP_ENABLE = yes
 COMBO_ENABLE = yes
+TAP_DANCE_ENABLE = yes

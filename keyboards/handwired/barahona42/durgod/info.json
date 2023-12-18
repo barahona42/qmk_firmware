@@ -1,0 +1,32 @@
+{
+    "manufacturer": "Rene Barahona",
+    "keyboard_name": "handwired/barahona42/durgod",
+    "maintainer": "Rene Barahona",
+    "bootloader": "caterina",
+    "diode_direction": "COL2ROW",
+    "features": {
+        "bootmagic": true,
+        "command": false,
+        "console": false,
+        "extrakey": true,
+        "mousekey": true,
+        "nkro": true
+    },
+    "matrix_pins": {
+        "cols": ["B3", "B2", "B6", "C7", "D5", "B7", "B5"],
+        "rows": ["B0", "D1", "F5", "F7", "D7"]
+    },
+    "processor": "atmega32u4",
+    "url": "",
+    "usb": {
+        "device_version": "1.0.0",
+        "pid": "0x0000",
+        "vid": "0xFEED"
+    },
+    "layouts": {
+        "LAYOUT_61": {
+            "layout": [
+            ]
+        }
+    }
+}

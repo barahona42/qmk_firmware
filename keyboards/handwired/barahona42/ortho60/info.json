@@ -2,7 +2,7 @@
     "manufacturer": "Rene Barahona",
     "keyboard_name": "handwired/barahona42/ortho60",
     "maintainer": "Rene Barahona",
-    "bootloader": "rp2040",
+    "bootloader": "atmel-dfu",
     "diode_direction": "COL2ROW",
     "features": {
         "bootmagic": true,

@@ -145,6 +145,18 @@ void handle_td_media_reset(tap_dance_state_t *state, void *user_data) {
             unregister_code(KC_MPRV);
             break;
     }
+    uint8_t cur_level = get_backlight_level();
+    for (uint8_t j = 0; j < cur_level; j++) {
+        backlight_level(j);
+        wait_ms(10);
+    }
+    backlight_level(cur_level);
+    for (int i = state->count-1; i > 0; i--) {
+        wait_ms(75);
+        backlight_toggle();
+        wait_ms(75);
+        backlight_toggle();
+    }
 }
 
 tap_dance_action_t tap_dance_actions[] = {
@@ -168,7 +180,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [_RAISE] = LAYOUT_ortho_4x12(
         BL_TOGG,     KC_HOME,    KC_UP,      KC_END,      KC_PGUP,     _______,   _______,     _______,     KC_LPRN,       KC_RPRN,       KC_EQL,    KC_DEL,
-        KC_GRV,      KC_LEFT,    KC_DOWN,    KC_RIGHT,    KC_PGDN,     _______,   _______,     _______,     KC_LBRC,       KC_RBRC,       _______,    KC_BSLS,
+        KC_GRV,      KC_LEFT,    KC_DOWN,    KC_RIGHT,    KC_PGDN,     _______,   _______,     KC_UNDS,     KC_LBRC,       KC_RBRC,       _______,   KC_BSLS,
         _______,     KC_F12,     CACOM,      CADOT,       _______,     _______,   _______,     KC_MINS,     KC_LCBR,       KC_RCBR,       _______,    _______,
         _______,     _______,    _______,    MO(_FN1),    _______,     _______,   _______,     _______,     _______,       _______,    _______,    _______
     ),

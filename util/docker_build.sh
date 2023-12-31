@@ -81,5 +81,6 @@ fi
 	-e ALT_GET_KEYBOARDS=true \
 	-e SKIP_GIT="$SKIP_GIT" \
 	-e MAKEFLAGS="$MAKEFLAGS" \
+    -e USER=rbarahona \
 	ghcr.io/qmk/qmk_cli \
 	make "$keyboard${keymap:+:$keymap}${target:+:$target}"

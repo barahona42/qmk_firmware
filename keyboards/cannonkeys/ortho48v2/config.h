@@ -16,6 +16,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #pragma once
 
+// #define RP2040_FLASH_AT25SF128A
+// #define RP2040_FLASH_GD25Q64CS
+// #define RP2040_FLASH_W25X10CL
+// #define RP2040_FLASH_IS25LP080
+// #define RP2040_FLASH_GENERIC_03H
+
 #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET // Activates the double-tap behavior
 #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_TIMEOUT 200U // Timeout window in ms in which the double tap can occur.
 

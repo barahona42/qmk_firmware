@@ -21,3 +21,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define BACKLIGHT_PWM_DRIVER PWMD6
 #define BACKLIGHT_PWM_CHANNEL RP2040_PWM_CHANNEL_A
+#define TAPPING_TERM 200

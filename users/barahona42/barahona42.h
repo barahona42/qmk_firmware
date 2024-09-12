@@ -4,6 +4,7 @@
 #define LCTL_LALT(keycode) SS_DOWN(X_LCTL)SS_DOWN(X_LALT)SS_TAP(keycode)SS_UP(X_LCTL)SS_UP(X_LALT)
 #define LCTL_LGUI_LALT_LSFT(keycode) SS_DOWN(X_LCTL) SS_DOWN(X_LGUI) SS_DOWN(X_LALT) SS_DOWN(X_LSFT) SS_TAP(keycode) SS_UP(X_LCTL) SS_UP(X_LGUI) SS_UP(X_LALT) SS_UP(X_LSFT)
 
+
 enum custom_keycodes {
     CGUIL = SAFE_RANGE,
     CGUIR,
@@ -17,12 +18,15 @@ enum custom_keycodes {
 
 enum custom_layers {
     _BASE,
-    _LOWER,
-    _RAISE,
-    _FN1,
-    _FN2
+    _LOWR,
+    _RAIS,
+    _LAY1,
+    _LAY2,
+    _LAY3
 };
 
 enum custom_tapdances {
     TD_MDIA = 0,
 };
+
+

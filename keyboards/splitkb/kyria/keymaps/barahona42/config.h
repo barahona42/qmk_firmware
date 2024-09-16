@@ -16,6 +16,9 @@
 
 #pragma once
 
+#ifdef CAPS_WORD_ENABLE
+#define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
+#endif
 #ifdef RGBLIGHT_ENABLE
 #    define RGBLIGHT_EFFECT_BREATHING
 #    define RGBLIGHT_EFFECT_RAINBOW_MOOD

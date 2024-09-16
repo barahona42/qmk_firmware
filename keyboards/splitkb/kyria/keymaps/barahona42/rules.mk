@@ -4,3 +4,7 @@ RGB_MATRIX_ENABLE = no     # Disable keyboard RGB matrix, as it is enabled by de
 RGBLIGHT_ENABLE = yes      # Enable keyboard RGB underglow
 COMBO_ENABLE = yes
 CONVERT_TO = liatris
+
+CAPS_WORD_ENABLE = yes
+
+## oled bongocat ##

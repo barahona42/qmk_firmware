@@ -15,6 +15,11 @@ char wpm_str[10];
 // etc
 #define RSTF_ENT    MT(MOD_RSFT, KC_ENT)    // hold: right shift    tap: enter
 #define SYMS_SPC    LT(SYMS, KC_SPC)        // hold: symbols layer  tap: space
+#define LAY1_SPC    LT(LAY1, KC_SPC)
+#define LAY2_SPC    LT(LAY2, KC_SPC)
+#define LGUI_SPC    MT(MOD_LGUI, KC_SPC)
+#define RGUI_SPC    MT(MOD_RGUI, KC_SPC)
+#define RALT_NAVS   LT(NAVS, KC_RALT)
 // #define SPC_RAIS    MT()
 // clang-format on
 void master_oled_display(void);
@@ -22,6 +27,8 @@ void secondary_oled_display(void);
 
 enum custom_layers {
     BASE = 0,
+    LAY1,
+    LAY2,
     SYMS,
     NUMS,
     NAVS,
@@ -39,8 +46,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [BASE] = LAYOUT(
         KC_TAB,     KC_Q,       KC_W,       KC_E,       KC_R,       KC_T,                                                                   KC_Y,      KC_U,       KC_I,       KC_O,       KC_P,       KC_BSPC,
         KC_ESC,     KC_A,       LCTL_S,     LALT_D,     LGUI_F,     KC_G,                                                                   KC_H,      RGUI_J,     RALT_K,     RCTL_L,     KC_SCLN,    KC_QUOT,
-        KC_LSFT,    KC_Z,       KC_X,       KC_C,       KC_V,       KC_B,       _______,    _______,                _______,    _______,    KC_N,      KC_M,       KC_COMM,    KC_DOT,     KC_SLSH,    RSTF_ENT,
-                                            _______,    MO(NAVS),   SYMS_SPC,   MO(NUMS),   MO(CONF),               MO(CONF),   MO(NUMS),   SYMS_SPC,  MO(NAVS),   _______
+        KC_LSFT,    KC_Z,       KC_X,       KC_C,       KC_V,       KC_B,       _______,    MO(CONF),                MO(CONF),    MO(NAVS), KC_N,      KC_M,       KC_COMM,    KC_DOT,     KC_SLSH,    RSTF_ENT,
+                                            KC_LCTL,    KC_LALT,    KC_LGUI,    LAY2_SPC,   MO(NUMS),                MO(NUMS),    LAY1_SPC, KC_RGUI,  KC_RALT,  KC_RCTL
+    ),
+
+    [LAY1] = LAYOUT(
+        KC_GRV,     _______,    KC_UP,      _______,    _______,    _______,                                                                _______,    _______,    KC_LPRN,    KC_RPRN,    KC_EQL,     KC_DEL,
+        _______,    KC_LEFT,    KC_DOWN,    KC_RIGHT,   _______,    _______,                                                                _______,    KC_UNDS,    KC_LBRC,    KC_RBRC,    _______,    KC_BSLS,
+        _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,                _______,    _______,    _______,    KC_MINS,    KC_LCBR,    KC_RCBR,    _______,    _______,
+                                            _______,    _______,    _______,    _______,    _______,                _______,    _______,    _______,    _______,    _______
+    ),
+    [LAY2] = LAYOUT(
+        _______,    _______,    _______,    _______,    _______,    _______,                                                                _______,    _______,    _______,    _______,    _______,    _______,
+        _______,    KC_EXLM,    KC_AT,      KC_HASH,    KC_DLR,     _______,                                                                _______,    _______,    _______,    _______,    _______,    _______,
+        _______,    KC_PERC,    KC_CIRC,    KC_AMPR,    KC_ASTR,    _______,    _______,    _______,                _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,
+                                            _______,    _______,    _______,    _______,    _______,                _______,    _______,    _______,    _______,    _______
     ),
     [SYMS] = LAYOUT(
         KC_GRV,     _______,    _______,    _______,    _______,    _______,                                                                _______,    _______,    KC_LPRN,    KC_RPRN,    KC_EQL,     KC_DEL,

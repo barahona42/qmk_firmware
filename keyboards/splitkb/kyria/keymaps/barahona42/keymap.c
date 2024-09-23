@@ -1,56 +1,68 @@
 #include QMK_KEYBOARD_H
 #include <stdio.h>
+#include "keycodes.h"
+#include "process_combo.h"
 #include "barahona42.c"
+
+#define LG_LEFT LCTL(LGUI(KC_LEFT))
+#define LG_RGHT LCTL(LGUI(KC_RIGHT))
+#define LG_UP LCTL(LGUI(KC_UP))
+#define LG_DOWN LCTL(LGUI(KC_DOWN))
+
+#define LCA_DOT LCA(KC_COMM)
+#define LCA_COM LCA(KC_DOT)
 
 char wpm_str[10];
 
-tap_dance_action_t tap_dance_actions[] = {};
-combo_t key_combos[] = {};
+combo_t            key_combos[]        = {};
+tap_dance_action_t tap_dance_actions[] = {[TD_MDIA] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, handle_td_media, handle_td_media_reset)};
+
+bool handle_tap(keyrecord_t *record, char *keycode) {
+    if (record->event.pressed) {
+        send_string(keycode);
+    }
+    return true;
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        // case CK_CACOM:
+        //     return handle_tap(record, CTL_ALT(X_TAB));
+    }
+    return true;
+}
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [BASE] = LAYOUT(
-        KC_TAB,     KC_Q,       KC_W,       KC_E,       KC_R,       KC_T,                                                                   KC_Y,      KC_U,       KC_I,       KC_O,       KC_P,       KC_BSPC,
-        KC_ESC,     KC_A,       LCTL_S,     LALT_D,     LGUI_F,     KC_G,                                                                   KC_H,      RGUI_J,     RALT_K,     RCTL_L,     KC_SCLN,    KC_QUOT,
-        KC_LSFT,    KC_Z,       KC_X,       KC_C,       KC_V,       KC_B,       _______,    MO(CONF),                MO(CONF),    MO(NAVS), KC_N,      KC_M,       KC_COMM,    KC_DOT,     KC_SLSH,    RSTF_ENT,
-                                            KC_LCTL,    KC_LALT,    KC_LGUI,    LAY2_SPC,   MO(NUMS),                MO(NUMS),    LAY1_SPC, KC_RGUI,  KC_RALT,  KC_RCTL
+        KC_TAB      ,KC_Q        ,KC_W        ,KC_E        ,KC_R        ,KC_T                                                                         ,KC_Y        ,KC_U        ,KC_I        ,KC_O        ,KC_P        ,KC_BSPC     ,
+        KC_ESC      ,KC_A        ,LCTL_S      ,LALT_D      ,LGUI_F      ,KC_G                                                                         ,KC_H        ,RGUI_J      ,RALT_K      ,RCTL_L      ,KC_SCLN     ,KC_QUOT     ,
+        KC_LSFT     ,KC_Z        ,KC_X        ,KC_C        ,KC_V        ,KC_B        ,MO(NAVS)    ,_______                  ,_______     ,MO(NAVS)    ,KC_N        ,KC_M        ,KC_COMM     ,KC_DOT      ,KC_SLSH     ,RSTF_ENT    ,
+                                               KC_LCTL     ,KC_LALT     ,KC_LGUI     ,LAY2_SPC    ,MO(NUMS)                 ,MO(NUMS)    ,LAY1_SPC    ,KC_RGUI     ,KC_RALT     ,KC_RCTL
     ),
-
     [LAY1] = LAYOUT(
-        KC_GRV,     _______,    KC_UP,      _______,    _______,    _______,                                                                _______,    _______,    KC_LPRN,    KC_RPRN,    KC_EQL,     KC_DEL,
-        _______,    KC_LEFT,    KC_DOWN,    KC_RIGHT,   _______,    _______,                                                                _______,    KC_UNDS,    KC_LBRC,    KC_RBRC,    _______,    KC_BSLS,
-        _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,                _______,    _______,    _______,    KC_MINS,    KC_LCBR,    KC_RCBR,    _______,    _______,
-                                            _______,    _______,    _______,    _______,    _______,                _______,    _______,    _______,    _______,    _______
+        KC_GRV      ,_______     ,KC_UP       ,_______     ,_______     ,_______                                                                      ,_______     ,_______     ,KC_LPRN     ,KC_RPRN     ,KC_EQL      ,KC_DEL      ,
+        _______     ,KC_LEFT     ,KC_DOWN     ,KC_RIGHT    ,_______     ,_______                                                                      ,_______     ,KC_UNDS     ,KC_LBRC     ,KC_RBRC     ,_______     ,KC_BSLS     ,
+        _______     ,_______     ,_______     ,_______     ,_______     ,_______     ,_______     ,_______                  ,_______     ,_______     ,_______     ,KC_MINS     ,KC_LCBR     ,KC_RCBR     ,_______     ,_______     ,
+                                               _______     ,_______     ,_______     ,_______     ,_______                  ,_______     ,_______     ,_______     ,_______     ,_______
     ),
     [LAY2] = LAYOUT(
-        _______,    _______,    _______,    _______,    _______,    _______,                                                                _______,    _______,    _______,    _______,    _______,    _______,
-        _______,    KC_EXLM,    KC_AT,      KC_HASH,    KC_DLR,     _______,                                                                _______,    _______,    _______,    _______,    _______,    _______,
-        _______,    KC_PERC,    KC_CIRC,    KC_AMPR,    KC_ASTR,    _______,    _______,    _______,                _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,
-                                            _______,    _______,    _______,    _______,    _______,                _______,    _______,    _______,    _______,    _______
+        _______     ,_______     ,_______     ,_______     ,_______     ,_______                                                                      ,_______     ,_______     ,_______     ,_______     ,_______     ,_______     ,
+        _______     ,KC_EXLM     ,KC_AT       ,KC_HASH     ,KC_DLR      ,_______                                                                      ,_______     ,_______     ,_______     ,_______     ,_______     ,_______     ,
+        _______     ,KC_PERC     ,KC_CIRC     ,KC_AMPR     ,KC_ASTR     ,_______     ,_______     ,_______                  ,_______     ,_______     ,_______     ,_______     ,_______     ,_______     ,_______     ,_______     ,
+                                               _______     ,_______     ,_______     ,_______     ,_______                  ,_______     ,_______     ,_______     ,_______     ,_______
     ),
-    [SYMS] = LAYOUT(
-        KC_GRV,     _______,    _______,    _______,    _______,    _______,                                                                _______,    _______,    KC_LPRN,    KC_RPRN,    KC_EQL,     KC_DEL,
-        _______,    KC_EXLM,    KC_AT,      KC_HASH,    KC_DLR,     _______,                                                                _______,    KC_UNDS,    KC_LBRC,    KC_RBRC,    _______,    KC_BSLS,
-        _______,    KC_PERC,    KC_CIRC,    KC_AMPR,    KC_ASTR,    _______,    _______,    _______,                _______,    _______,    _______,    KC_MINS,    KC_LCBR,    KC_RCBR,    _______,    _______,
-                                            _______,    _______,    _______,    _______,    _______,                _______,    _______,    _______,    _______,    _______
+    [NUMS] = LAYOUT(
+        _______     ,_______     ,_______     ,_______     ,LSG(KC_TAB) ,LGUI(KC_TAB)                                                                 ,_______     ,KC_7        ,KC_8        ,KC_9        ,_______     ,_______     ,
+        _______     ,_______     ,_______     ,_______     ,LSG(KC_GRV) ,LGUI(KC_GRV)                                                                 ,_______     ,KC_4        ,KC_5        ,KC_6        ,_______     ,_______     ,
+        _______     ,KC_F12      ,LCA_DOT     ,LCA_COM     ,RCS(KC_TAB) ,RCTL(KC_TAB),_______     ,_______                  ,_______     ,_______     ,_______     ,KC_1        ,KC_2        ,KC_3        ,_______     ,_______     ,
+                                               _______     ,_______     ,_______     ,_______     ,_______                  ,_______     ,_______     ,_______     ,KC_0        ,KC_DOT
     ),
-    [NUMS]= LAYOUT(
-        _______,    KC_1,       KC_2,       KC_3,       KC_4,       KC_5,                                                                   KC_6,       KC_7,       KC_8,       KC_9,       KC_0,       KC_DEL,
-        _______,    _______,    _______,    _______,    _______,    _______,                                                                _______,    KC_4,       KC_5,       KC_6,       _______,    _______,
-        _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,                _______,    _______,    _______,    KC_1,       KC_2,       KC_3,       _______,    _______,
-                                            _______,    _______,    _______,    _______,    _______,                _______,    _______,    _______,    KC_0,       _______
-    ),
-    [NAVS]= LAYOUT(
-        KC_HOME,    _______,    KC_UP,      _______,    KC_PGUP,    _______,                                                                _______,    _______,    _______,    _______,    _______,    KC_DEL,
-        KC_DOWN,    KC_LEFT,    KC_DOWN,    KC_RIGHT,   KC_PGDN,    _______,                                                                _______,    KC_RGUI,    KC_RALT,    KC_RCTL,    _______,    _______,
-        KC_LSFT,    _______,    _______,    _______,    _______,    _______,    _______,    _______,                _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,
-                                            _______,    _______,    _______,    _______,    _______,                _______,    _______,    _______,    _______,    _______
-    ),
-    [CONF]= LAYOUT(
-        BL_TOGG,    _______,    _______,    _______,    _______,    _______,                                                                _______,    _______,    _______,    _______,    QK_MAKE,    QK_BOOT,
-        RGB_TOG,    RGB_MOD,    _______,    _______,    _______,    _______,                                                                _______,    _______,    _______,    _______,    _______,    _______,
-        UG_TOGG,    UG_SPDU,    UG_SPDD,    UG_NEXT,    _______,    _______,    _______,    _______,                _______,    _______,    _______,    _______,    _______,    _______,    _______,    _______,
-                                            _______,    _______,    _______,    _______,    _______,                _______,    _______,    _______,    _______,    _______
+    [NAVS] = LAYOUT(
+        _______     ,_______     ,LG_UP       ,_______     ,_______     ,_______                                                                      ,_______     ,_______     ,_______     ,_______     ,_______     ,TD(TD_MDIA) ,
+        _______     ,LG_LEFT     ,LG_DOWN     ,LG_RGHT     ,_______     ,_______                                                                      ,_______     ,_______     ,_______     ,_______     ,_______     ,_______     ,
+        QK_BOOT     ,QK_MAKE     ,_______     ,_______     ,_______     ,_______     ,_______     ,_______                  ,_______     ,_______     ,_______     ,_______     ,_______     ,_______     ,RGB_MOD     ,RGB_TOG     ,
+                                               _______     ,_______     ,_______     ,_______     ,_______                  ,_______     ,_______     ,_______     ,_______     ,_______
     )
 };
 void master_oled_display(void){
@@ -134,3 +146,4 @@ bool oled_task_user(void) {
 //     return false;
 // }
 // #endif
+

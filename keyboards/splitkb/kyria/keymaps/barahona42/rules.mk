@@ -5,7 +5,11 @@ RGBLIGHT_ENABLE = yes      # Enable keyboard RGB underglow
 COMBO_ENABLE = yes
 CONVERT_TO = liatris
 
+TAP_DANCE_ENABLE = yes
 CAPS_WORD_ENABLE = yes
+SEND_STRING_ENABLE = yes
+
+TAPPING_TERM = 150
 # WPM_ENABLE = yes
 # OLED_DRIVER_ENABLE = yes
 ## oled bongocat ##

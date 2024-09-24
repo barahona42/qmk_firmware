@@ -35,7 +35,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [BASE] = LAYOUT(
-        KC_TAB      ,KC_Q        ,KC_W        ,KC_E        ,KC_R        ,KC_T                                                                         ,KC_Y        ,KC_U        ,KC_I        ,KC_O        ,KC_P        ,KC_BSPC     ,
+        KC_TAB      ,KC_Q        ,W_LAY2      ,E_LAY1      ,KC_R        ,KC_T                                                                         ,KC_Y        ,KC_U        ,KC_I        ,KC_O        ,KC_P        ,KC_BSPC     ,
         KC_ESC      ,KC_A        ,LCTL_S      ,LALT_D      ,LGUI_F      ,KC_G                                                                         ,KC_H        ,RGUI_J      ,RALT_K      ,RCTL_L      ,KC_SCLN     ,KC_QUOT     ,
         KC_LSFT     ,KC_Z        ,KC_X        ,KC_C        ,KC_V        ,KC_B        ,MO(NAVS)    ,_______                  ,_______     ,MO(NAVS)    ,KC_N        ,KC_M        ,KC_COMM     ,KC_DOT      ,KC_SLSH     ,RSTF_ENT    ,
                                                KC_LCTL     ,KC_LALT     ,KC_LGUI     ,LAY2_SPC    ,MO(NUMS)                 ,MO(NUMS)    ,LAY1_SPC    ,KC_RGUI     ,KC_RALT     ,KC_RCTL
@@ -56,7 +56,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______     ,_______     ,_______     ,_______     ,LSG(KC_TAB) ,LGUI(KC_TAB)                                                                 ,_______     ,KC_7        ,KC_8        ,KC_9        ,_______     ,_______     ,
         _______     ,_______     ,_______     ,_______     ,LSG(KC_GRV) ,LGUI(KC_GRV)                                                                 ,_______     ,KC_4        ,KC_5        ,KC_6        ,_______     ,_______     ,
         _______     ,KC_F12      ,LCA_DOT     ,LCA_COM     ,RCS(KC_TAB) ,RCTL(KC_TAB),_______     ,_______                  ,_______     ,_______     ,_______     ,KC_1        ,KC_2        ,KC_3        ,_______     ,_______     ,
-                                               _______     ,_______     ,_______     ,_______     ,_______                  ,_______     ,_______     ,_______     ,KC_0        ,KC_DOT
+                                               _______     ,_______     ,_______     ,_______     ,_______                  ,_______     ,_______     ,KC_0        ,KC_DOT      ,_______
     ),
     [NAVS] = LAYOUT(
         _______     ,_______     ,LG_UP       ,_______     ,_______     ,_______                                                                      ,_______     ,_______     ,_______     ,_______     ,_______     ,TD(TD_MDIA) ,

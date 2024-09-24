@@ -21,6 +21,8 @@
 #define LGUI_SPC    MT(MOD_LGUI, KC_SPC)
 #define RGUI_SPC    MT(MOD_RGUI, KC_SPC)
 #define RALT_NAVS   LT(NAVS, KC_RALT)
+#define E_LAY1      LT(LAY1, KC_E)
+#define W_LAY2      LT(LAY2, KC_W)
 
 
 enum custom_keycodes {

@@ -32,5 +32,5 @@
         "--header-insertion=never"
     ],
     "cmake.sourceDirectory": "/Users/rbarahona/development/repos/personal/qmk_firmware/lib/googletest",
-    "workbench.colorTheme": "paddy-dark"
+    "workbench.colorTheme": "paddy-citadel"
 }

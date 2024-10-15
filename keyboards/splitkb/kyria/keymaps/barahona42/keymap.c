@@ -12,6 +12,8 @@
 #define LCA_DOT LCA(KC_COMM)
 #define LCA_COM LCA(KC_DOT)
 
+#define CS_LCA(keycode) SS_DOWN(X_LCTL) SS_DOWN(X_LALT) SS_TAP(keycode) SS_UP(X_LCTL) SS_UP(X_LALT)
+
 char wpm_str[10];
 
 combo_t            key_combos[]        = {};
@@ -36,7 +38,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [BASE] = LAYOUT(
         KC_TAB      ,KC_Q        ,W_LAY2      ,E_LAY1      ,KC_R        ,KC_T                                                                         ,KC_Y        ,KC_U        ,KC_I        ,KC_O        ,KC_P        ,KC_BSPC     ,
-        KC_ESC      ,KC_A        ,LCTL_S      ,LALT_D      ,LGUI_F      ,KC_G                                                                         ,KC_H        ,RGUI_J      ,RALT_K      ,RCTL_L      ,KC_SCLN     ,KC_QUOT     ,
+        KC_ESC      ,KC_A        ,LCTL_S      ,LALT_D      ,LGUI_F      ,LSFT_G                                                                       ,RSFT_H      ,RGUI_J      ,RALT_K      ,RCTL_L      ,KC_SCLN     ,KC_QUOT     ,
         KC_LSFT     ,KC_Z        ,KC_X        ,KC_C        ,KC_V        ,KC_B        ,MO(NAVS)    ,_______                  ,_______     ,MO(NAVS)    ,KC_N        ,KC_M        ,KC_COMM     ,KC_DOT      ,KC_SLSH     ,RSTF_ENT    ,
                                                KC_LCTL     ,KC_LALT     ,KC_LGUI     ,LAY2_SPC    ,MO(NUMS)                 ,MO(NUMS)    ,LAY1_SPC    ,KC_RGUI     ,KC_RALT     ,KC_RCTL
     ),
@@ -48,7 +50,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [LAY2] = LAYOUT(
         _______     ,_______     ,_______     ,_______     ,_______     ,_______                                                                      ,_______     ,_______     ,_______     ,_______     ,_______     ,_______     ,
-        _______     ,KC_EXLM     ,KC_AT       ,KC_HASH     ,KC_DLR      ,_______                                                                      ,_______     ,_______     ,_______     ,_______     ,_______     ,_______     ,
+        _______     ,KC_EXLM     ,KC_AT       ,KC_HASH     ,KC_DLR      ,QK_LEAD                                                                      ,_______     ,_______     ,_______     ,_______     ,_______     ,_______     ,
         _______     ,KC_PERC     ,KC_CIRC     ,KC_AMPR     ,KC_ASTR     ,_______     ,_______     ,_______                  ,_______     ,_______     ,_______     ,_______     ,_______     ,_______     ,_______     ,_______     ,
                                                _______     ,_______     ,_______     ,_______     ,_______                  ,_______     ,_______     ,_______     ,_______     ,_______
     ),
@@ -65,51 +67,74 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                _______     ,_______     ,_______     ,_______     ,_______                  ,_______     ,_______     ,_______     ,_______     ,_______
     )
 };
-void master_oled_display(void){
-        oled_write_P(qmk_logo, false);
-        oled_write_P(PSTR("Layer:"), false);
-        // Host Keyboard Layer Status
-        switch (get_highest_layer(layer_state|default_layer_state)) {
-            case BASE:
-                oled_write_P(PSTR("BASE\n"), false);
-                break;
-            case LAY1:
-                oled_write_P(PSTR("LAY1\n"), false);
-                break;
-            case LAY2:
-                oled_write_P(PSTR("LAY2\n"), false);
-                break;
-            case SYMS:
-                oled_write_P(PSTR("SYMS\n"), false);
-                break;
-            case NUMS:
-                oled_write_P(PSTR("NUMS\n"), false);
-                break;
-            case NAVS:
-                oled_write_P(PSTR("NAVS\n"), false);
-                break;
-            case CONF:
-                oled_write_P(PSTR("CONF\n"), false);
-                break;
-            default:
-                oled_write_P(PSTR("idk\n"), false);
-        }
 
-        // Write host Keyboard LED Status to OLEDs
-        led_t led_usb_state = host_keyboard_led_state();
-        oled_write_P(led_usb_state.num_lock    ? PSTR("NUMLCK ") : PSTR("       "), false);
-        oled_write_P(led_usb_state.caps_lock   ? PSTR("CAPLCK ") : PSTR("       "), false);
-        oled_write_P(led_usb_state.scroll_lock ? PSTR("SCRLCK ") : PSTR("       "), false);
+// clang-format on
+void leader_start_user() {
+    oled_write_P(PSTR("leader key starting\n"), false);
+}
 
-        if ((get_mods() & MOD_BIT(KC_LGUI)) == MOD_BIT(KC_LGUI)) {
-            oled_write_P(PSTR("\n\nMOD LGUI"), false);
-        } else if ((get_mods() & MOD_BIT(KC_LALT)) == MOD_BIT(KC_LALT)) {
-            oled_write_P(PSTR("\n\nMOD LALT"), false);
-        } else if ((get_mods() & MOD_BIT(KC_LCTL)) == MOD_BIT(KC_LCTL)) {
-            oled_write_P(PSTR("\n\nMOD LCTL"),false);
-        } else {
-            oled_write_P(PSTR(""), false);
-        }
+void leader_end_user() {
+    if (leader_sequence_one_key(KC_O)) {
+        SEND_STRING(SS_DOWN(X_LCTL) SS_DOWN(X_LALT) SS_TAP(X_O) SS_UP(X_LCTL) SS_UP(X_LALT));
+    } else if (leader_sequence_one_key(KC_P)) {
+        SEND_STRING(SS_DOWN(X_LCTL) SS_DOWN(X_LALT) SS_TAP(X_P) SS_UP(X_LCTL) SS_UP(X_LALT));
+    } else if (leader_sequence_two_keys(KC_O, KC_O)) {
+        SEND_STRING(SS_DOWN(X_LCTL) SS_DOWN(X_LALT) SS_DOWN(X_LSFT) SS_TAP(X_O) SS_UP(X_LSFT) SS_UP(X_LCTL) SS_UP(X_LALT));
+    } else if (leader_sequence_two_keys(KC_P, KC_P)) {
+        SEND_STRING(SS_DOWN(X_LCTL) SS_DOWN(X_LALT) SS_DOWN(X_LSFT) SS_TAP(X_P) SS_UP(X_LSFT) SS_UP(X_LCTL) SS_UP(X_LALT));
+    } else if (leader_sequence_one_key(KC_J)) {
+        SEND_STRING(SS_DOWN(X_LGUI) SS_TAP(X_C) SS_UP(X_LGUI));
+    } else if (leader_sequence_two_keys(KC_J, KC_J)) {
+        SEND_STRING(SS_DOWN(X_LGUI) SS_TAP(X_V) SS_UP(X_LGUI));
+    }
+    oled_write_P(PSTR("leader key ended\n"), false);
+}
+
+void master_oled_display(void) {
+    oled_write_P(qmk_logo, false);
+    oled_write_P(PSTR("Layer:"), false);
+    // Host Keyboard Layer Status
+    switch (get_highest_layer(layer_state | default_layer_state)) {
+        case BASE:
+            oled_write_P(PSTR("BASE\n"), false);
+            break;
+        case LAY1:
+            oled_write_P(PSTR("LAY1\n"), false);
+            break;
+        case LAY2:
+            oled_write_P(PSTR("LAY2\n"), false);
+            break;
+        case SYMS:
+            oled_write_P(PSTR("SYMS\n"), false);
+            break;
+        case NUMS:
+            oled_write_P(PSTR("NUMS\n"), false);
+            break;
+        case NAVS:
+            oled_write_P(PSTR("NAVS\n"), false);
+            break;
+        case CONF:
+            oled_write_P(PSTR("CONF\n"), false);
+            break;
+        default:
+            oled_write_P(PSTR("idk\n"), false);
+    }
+
+    // Write host Keyboard LED Status to OLEDs
+    // led_t led_usb_state = host_keyboard_led_state();
+    // oled_write_P(led_usb_state.num_lock    ? PSTR("NUMLCK ") : PSTR("       "), false);
+    // oled_write_P(led_usb_state.caps_lock   ? PSTR("CAPLCK ") : PSTR("       "), false);
+    // oled_write_P(led_usb_state.scroll_lock ? PSTR("SCRLCK ") : PSTR("       "), false);
+
+    // if ((get_mods() & MOD_BIT(KC_LGUI)) == MOD_BIT(KC_LGUI)) {
+    //     oled_write_P(PSTR("\n\nMOD LGUI"), false);
+    // } else if ((get_mods() & MOD_BIT(KC_LALT)) == MOD_BIT(KC_LALT)) {
+    //     oled_write_P(PSTR("\n\nMOD LALT"), false);
+    // } else if ((get_mods() & MOD_BIT(KC_LCTL)) == MOD_BIT(KC_LCTL)) {
+    //     oled_write_P(PSTR("\n\nMOD LCTL"),false);
+    // } else {
+    //     oled_write_P(PSTR(""), false);
+    // }
 }
 
 void secondary_oled_display() {
@@ -146,4 +171,3 @@ bool oled_task_user(void) {
 //     return false;
 // }
 // #endif
-

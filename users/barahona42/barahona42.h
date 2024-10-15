@@ -1,8 +1,13 @@
 #include "keycodes.h"
 
+// clang-format off
 #define LCTL_LGUI(keycode) SS_DOWN(X_LCTL)SS_DOWN(X_LGUI)SS_TAP(keycode)SS_UP(X_LCTL)SS_UP(X_LGUI)
 #define LCTL_LALT(keycode) SS_DOWN(X_LCTL)SS_DOWN(X_LALT)SS_TAP(keycode)SS_UP(X_LCTL)SS_UP(X_LALT)
 #define LCTL_LGUI_LALT_LSFT(keycode) SS_DOWN(X_LCTL) SS_DOWN(X_LGUI) SS_DOWN(X_LALT) SS_DOWN(X_LSFT) SS_TAP(keycode) SS_UP(X_LCTL) SS_UP(X_LGUI) SS_UP(X_LALT) SS_UP(X_LSFT)
+
+// SFT
+#define LSFT_G      MT(MOD_LSFT, KC_G)
+#define RSFT_H      MT(MOD_RSFT, KC_H)
 
 // GUI
 #define LGUI_F      MT(MOD_LGUI, KC_F)      // hold: left gui       tap: f
@@ -24,6 +29,8 @@
 #define E_LAY1      LT(LAY1, KC_E)
 #define W_LAY2      LT(LAY2, KC_W)
 
+// #define LS_LEAD     MT(MOD_LSFT, QK_LEAD)
+// clang-format on
 
 enum custom_keycodes {
     CGUIL = SAFE_RANGE,

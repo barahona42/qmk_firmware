@@ -15,8 +15,6 @@
  */
 #pragma once
 
-#define LEADER_TIMEOUT
-
 #ifdef CAPS_WORD_ENABLE
 #    define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
 #endif
@@ -34,7 +32,4 @@
 #    define RGBLIGHT_HUE_STEP 8
 #    define RGBLIGHT_SAT_STEP 8
 #    define RGBLIGHT_VAL_STEP 8
-#    ifndef RGBLIGHT_LIMIT_VAL
-#        define RGBLIGHT_LIMIT_VAL 150
-#    endif
 #endif

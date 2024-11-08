@@ -37,7 +37,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [BASE] = LAYOUT(
-        KC_TAB      ,KC_Q        ,W_LAY2      ,E_LAY1      ,KC_R        ,KC_T                                                                         ,KC_Y        ,KC_U        ,KC_I        ,KC_O        ,KC_P        ,KC_BSPC     ,
+        KC_TAB      ,KC_Q        ,W_LAY2      ,E_LAY1      ,KC_R        ,KC_T                                                                         ,KC_Y        ,KC_U        ,I_LAY1      ,O_LAY2      ,KC_P        ,KC_BSPC     ,
         KC_ESC      ,KC_A        ,LCTL_S      ,LALT_D      ,LGUI_F      ,LSFT_G                                                                       ,RSFT_H      ,RGUI_J      ,RALT_K      ,RCTL_L      ,KC_SCLN     ,KC_QUOT     ,
         KC_LSFT     ,KC_Z        ,KC_X        ,KC_C        ,KC_V        ,KC_B        ,MO(NAVS)    ,_______                  ,_______     ,MO(NAVS)    ,KC_N        ,KC_M        ,KC_COMM     ,KC_DOT      ,KC_SLSH     ,RSTF_ENT    ,
                                                KC_LCTL     ,KC_LALT     ,KC_LGUI     ,LAY2_SPC    ,MO(NUMS)                 ,MO(NUMS)    ,LAY1_SPC    ,KC_RGUI     ,KC_RALT     ,KC_RCTL

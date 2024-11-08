@@ -28,6 +28,8 @@
 #define RALT_NAVS   LT(NAVS, KC_RALT)
 #define E_LAY1      LT(LAY1, KC_E)
 #define W_LAY2      LT(LAY2, KC_W)
+#define I_LAY1      LT(LAY1, KC_I)
+#define O_LAY2      LT(LAY2, KC_O)
 
 // #define LS_LEAD     MT(MOD_LSFT, QK_LEAD)
 // clang-format on

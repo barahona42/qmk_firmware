@@ -1,13 +1,14 @@
-#include "keycodes.h"
-
 // clang-format off
+
 #define LCTL_LGUI(keycode) SS_DOWN(X_LCTL)SS_DOWN(X_LGUI)SS_TAP(keycode)SS_UP(X_LCTL)SS_UP(X_LGUI)
 #define LCTL_LALT(keycode) SS_DOWN(X_LCTL)SS_DOWN(X_LALT)SS_TAP(keycode)SS_UP(X_LCTL)SS_UP(X_LALT)
 #define LCTL_LGUI_LALT_LSFT(keycode) SS_DOWN(X_LCTL) SS_DOWN(X_LGUI) SS_DOWN(X_LALT) SS_DOWN(X_LSFT) SS_TAP(keycode) SS_UP(X_LCTL) SS_UP(X_LGUI) SS_UP(X_LALT) SS_UP(X_LSFT)
 
 // SFT
+#define LSFT_Z      MT(MOD_LSFT, KC_Z)
 #define LSFT_G      MT(MOD_LSFT, KC_G)
 #define RSFT_H      MT(MOD_RSFT, KC_H)
+#define RSFT_SLSH   MT(MOD_RSFT, KC_SLSH)
 
 // GUI
 #define LGUI_F      MT(MOD_LGUI, KC_F)      // hold: left gui       tap: f
@@ -20,12 +21,14 @@
 #define RCTL_L      MT(MOD_RCTL, KC_L)      // hold: right ctl      tap: l
 // etc
 #define RSTF_ENT    MT(MOD_RSFT, KC_ENT)    // hold: right shift    tap: enter
+#define LGUI_SPC    MT(MOD_LGUI, KC_SPC)
+#define RGUI_SPC    MT(MOD_RGUI, KC_SPC)
+
+// mods
+#define RALT_NAVS   LT(NAVS, KC_RALT)
 #define SYMS_SPC    LT(SYMS, KC_SPC)        // hold: symbols layer  tap: space
 #define LAY1_SPC    LT(LAY1, KC_SPC)
 #define LAY2_SPC    LT(LAY2, KC_SPC)
-#define LGUI_SPC    MT(MOD_LGUI, KC_SPC)
-#define RGUI_SPC    MT(MOD_RGUI, KC_SPC)
-#define RALT_NAVS   LT(NAVS, KC_RALT)
 #define E_LAY1      LT(LAY1, KC_E)
 #define W_LAY2      LT(LAY2, KC_W)
 #define I_LAY1      LT(LAY1, KC_I)
@@ -59,7 +62,9 @@ enum custom_layers {
 };
 
 enum custom_tapdances {
-    TD_MDIA = 0,
+    TD_MDIA = 0, // tap-dance for media control
+    TD_UPPR,     // tap-dance for caps control
+    TD_FIRM,     // tap-dance for firmware control
 };
 
 void master_oled_display(void);

@@ -14,112 +14,116 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include QMK_KEYBOARD_H
+#include <stdio.h>
 #include "keycodes.h"
 #include "process_combo.h"
-#include "customs.h"
+#include "barahona42.c"
 
+#define LCG_LFT LCTL(LGUI(KC_LEFT))
+#define LCG_RGHT LCTL(LGUI(KC_RIGHT))
+#define LCG_UP LCTL(LGUI(KC_UP))
+#define LCG_DOWN LCTL(LGUI(KC_DOWN))
+#define LCA_DOT LCA(KC_COMM)
+#define LCA_COM LCA(KC_DOT)
 
-#define KC_CTL_A       MT(MOD_LCTL, KC_A)
-#define KC_CTL_SCLN    MT(MOD_RCTL, KC_SCLN)
+#define CS_LCA(keycode) SS_DOWN(X_LCTL) SS_DOWN(X_LALT) SS_TAP(keycode) SS_UP(X_LCTL) SS_UP(X_LALT)
 
-#define KC_SFT_Z       MT(MOD_LSFT, KC_Z)
-#define KC_SFT_SLSH    MT(MOD_RSFT, KC_SLSH)
+//clang-format on
+const uint16_t PROGMEM backspace_combo[] = {KC_O, KC_P, COMBO_END};
+const uint16_t PROGMEM delete_combo[]    = {KC_RPRN, KC_EQL, COMBO_END};
+const uint16_t PROGMEM enter_combo[]     = {KC_DOT, KC_SLSH, COMBO_END};
+const uint16_t PROGMEM tab_combo[]       = {KC_Q, KC_W, COMBO_END};
+const uint16_t PROGMEM esc_combo[]       = {KC_A, KC_S, COMBO_END};
 
-#define KC_GUI_ESC     MT(MOD_LGUI, KC_ESC)
-#define KC_ALT_ENT     MT(MOD_LALT, KC_ENT)
-#define KC_LAY1_SPC    MT(_LAY1, KC_SPC)
-#define KC_LAY2_SPC    MT(_LAY2, KC_SPC)
-#define KC_SFT_TAB     MT(MOD_RSFT, KC_TAB)
-
-
-// Each layer gets a name for readability, which is then used in the keymap matrix below.
-// The underscores don't mean anything - you can have a layer called STUFF or any other name.
-// Layer names don't all need to be of the same length, obviously, and you can also skip them
-// entirely and just use numbers.
-const uint16_t PROGMEM combo_rprn_eql[] = {KC_RPRN, KC_EQL, COMBO_END};
-const uint16_t PROGMEM combo_eql_del[]   = {KC_EQL, KC_DEL, COMBO_END};
-const uint16_t PROGMEM combo_lbrc_rbrc[] = {KC_LBRC, KC_RBRC, COMBO_END};
-const uint16_t PROGMEM combo_rbrc_bsls[] = {KC_RBRC, KC_BSLS, COMBO_END};
-
-combo_t key_combos[] = {COMBO(combo_eql_del, KC_F12), COMBO(combo_rprn_eql, S(KC_F12)), COMBO(combo_lbrc_rbrc, LCTL(LALT(KC_COMM))), COMBO(combo_rbrc_bsls, LCTL(LALT(KC_DOT)))};
-
-bool handle_tap(keyrecord_t *record, char *keycode) {
-    if (record->event.pressed) {
-        send_string(keycode);
-    }
-    return true;
-}
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case CGUIL:
-            return handle_tap(record, LCTL_LGUI(X_LEFT));
-        case CGUIR:
-            return handle_tap(record, LCTL_LGUI(X_RIGHT));
-        case CGUIU:
-            return handle_tap(record, LCTL_LGUI(X_UP));
-        case CGUID:
-            return handle_tap(record, LCTL_LGUI(X_DOWN));
-        case CK_CACOM:
-            return handle_tap(record, LCTL_LALT(X_COMM));
-        case CK_CADOT:
-            return handle_tap(record, LCTL_LALT(X_DOT));
-    }
-    return true;
+combo_t key_combos[] = {
+    COMBO(backspace_combo, KC_BSPC), COMBO(delete_combo, KC_DEL), COMBO(enter_combo, KC_ENT), COMBO(tab_combo, KC_TAB), COMBO(esc_combo, KC_ESC),
 };
-
-void handle_td_media(tap_dance_state_t *state, void *user_data) {
-    switch (state->count) {
-        case 1:
-            register_code(KC_MPLY);
-            break;
-        case 2:
-            register_code(KC_MNXT);
-            break;
-        case 3:
-            register_code(KC_MPRV);
-            break;
-    }
-}
-
-void handle_td_media_reset(tap_dance_state_t *state, void *user_data) {
-    switch (state->count) {
-        case 1:
-            unregister_code(KC_MPLY);
-            break;
-        case 2:
-            unregister_code(KC_MNXT);
-            break;
-        case 3:
-            unregister_code(KC_MPRV);
-            break;
-    }
-}
 
 tap_dance_action_t tap_dance_actions[] = {
-    [TD_MDIA] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, handle_td_media, handle_td_media_reset)
+    [TD_MDIA] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, handle_td_media, handle_td_media_reset),
+    [TD_UPPR] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, handle_td_uppr, handle_td_uppr_reset),
+    [TD_FIRM] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, handle_td_firm, handle_td_firm_reset),
 };
-
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {}
+    return true;
+}
+// LAYOUT_split_3x5_3
+// clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-   [_BASE] = LAYOUT_split_3x5_3(
-
-        KC_Q,     KC_W,     KC_E,       KC_R,       KC_T,               KC_Y,           KC_U,       KC_I,      KC_O,     KC_P,
-        KC_CTL_A, KC_S,     KC_D,       KC_F,       KC_G,               KC_H,           KC_J,       KC_K,      KC_L,     KC_CTL_SCLN,
-        KC_SFT_Z, KC_X,     KC_C,       KC_V,       KC_B,               KC_N,           KC_M,       KC_COMM,   KC_DOT,   KC_SFT_SLSH,
-                            KC_GUI_ESC, KC_ALT_ENT, KC_LAY1_SPC,        KC_LAY2_SPC,    KC_RSFT,    KC_SFT_TAB
+    [BASE] = LAYOUT_split_3x5_3(
+/*      ____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________, */
+        KC_Q                ,KC_W                ,KC_E                ,KC_R                ,KC_T                                                          ,KC_Y                ,KC_U                ,KC_I                ,KC_O                ,KC_P                ,
+/*      ____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________, */
+        KC_A                ,LCTL_S              ,LALT_D              ,LGUI_F              ,LSFT_G                                                        ,RSFT_H              ,RGUI_J              ,RALT_K              ,RCTL_L              ,KC_SCLN             ,
+/*      ____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________, */
+        KC_Z                ,KC_X                ,KC_C                ,KC_V                ,KC_B                                                          ,KC_N                ,KC_M                ,KC_COMM             ,KC_DOT              ,KC_SLSH             ,
+/*      ____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________, */
+                                                  LT(LAY3, KC_ESC)    ,LT(LAY2, KC_SPC)    ,MT(MOD_LSFT, KC_TAB),                                          MT(MOD_RSFT, KC_ENT),LT(LAY1, KC_SPC)    ,LT(LAY3, KC_BSPC)
+/*      ____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________, */
     ),
-   [_LAY1] = LAYOUT_split_3x5_3(
-
-        KC_EXLM,  KC_AT,    KC_LCBR,    KC_RCBR,    KC_PIPE,            KC_GRV,         KC_TILD,    KC_TRNS,   KC_TRNS,  KC_BSLS,
-        KC_HASH,  KC_DLR,   KC_LPRN,    KC_RPRN,    KC_BTN2,            KC_PLUS,        KC_MINS,    KC_SLSH,   KC_ASTR,  KC_QUOT,
-        KC_PERC,  KC_CIRC,  KC_LBRC,    KC_RBRC,    KC_BTN1,            KC_AMPR,        KC_EQL,     KC_COMM,   KC_DOT,   KC_MINS,
-                            CM_TOGG,    KC_SCLN,    KC_EQL,             KC_EQL,         KC_SCLN,    KC_DEL
+    [LAY1] = LAYOUT_split_3x5_3(
+/*      ____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________, */
+        _______             ,KC_UP               ,_______             ,_______             ,_______                                                       ,_______             ,KC_GRV              ,KC_LPRN             ,KC_RPRN             ,KC_EQL,
+/*      ____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________, */
+        KC_LEFT             ,KC_DOWN             ,KC_RIGHT            ,_______             ,_______                                                       ,_______             ,KC_UNDS             ,KC_LBRC             ,KC_RBRC             ,KC_QUOT,
+/*      ____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________, */
+        _______             ,_______             ,_______             ,_______             ,_______                                                       ,_______             ,KC_MINS             ,KC_LCBR             ,KC_RCBR             ,KC_BSLS,
+/*      ____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________, */
+                                                  _______             ,KC_LGUI             ,KC_LALT                                                       ,_______             ,_______             ,_______
+/*      ____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________, */
     ),
-   [_LAY2] = LAYOUT_split_3x5_3(
-
-        KC_1,     KC_2,     KC_3,       KC_4,       KC_5,               KC_6,           KC_7,       KC_8,      KC_9,     KC_0,
-        KC_F1,    KC_F2,    KC_F3,      KC_F4,      KC_F5,              KC_LEFT,        KC_DOWN,    KC_UP,     KC_RGHT,  KC_VOLU,
-        KC_F6,    KC_F7,    KC_F8,      KC_F9,      KC_F10,             KC_MS_L,        KC_MS_D,    KC_MS_U,   KC_MS_R,  KC_VOLD,
-                            KC_F11,     KC_F12,     KC_TRNS,            KC_TRNS,        KC_MPLY,    KC_MNXT
+    [LAY2] = LAYOUT_split_3x5_3(
+/*      ____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________, */
+        _______             ,_______             ,_______             ,_______             ,_______                                                       ,KC_F12              ,KC_F7               ,KC_F8               ,KC_F9               ,_______               ,
+/*      ____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________, */
+        KC_EXLM             ,KC_AT               ,KC_HASH             ,KC_DLR              ,_______                                                       ,KC_F11              ,KC_F4               ,KC_F5               ,KC_F6               ,_______               ,
+/*      ____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________, */
+        KC_PERC             ,KC_CIRC             ,KC_AMPR             ,KC_ASTR             ,_______                                                       ,KC_F10              ,KC_F1               ,KC_F2               ,KC_F3               ,_______               ,
+/*      ____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________, */
+                                                  _______             ,_______             ,_______                                                       ,_______             ,_______             ,_______
+/*      ____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________, */
+    ),
+    [LAY3] = LAYOUT_split_3x5_3(
+/*      ____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________, */
+        _______             ,LCG_UP              ,_______             ,_______             ,_______                                                       ,_______             ,KC_7                ,KC_8                ,KC_9                ,_______             ,
+/*      ____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________, */
+        LCG_LFT             ,LCG_DOWN            ,LCG_RGHT            ,_______             ,_______                                                       ,_______             ,KC_4                ,KC_5                ,KC_6                ,_______             ,
+/*      ____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________, */
+        LGUI(KC_Z)          ,LGUI(KC_X)          ,LGUI(KC_C)          ,LGUI(KC_V)          ,_______                                                       ,_______             ,KC_1                ,KC_2                ,KC_3                ,_______             ,
+/*      ____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________, */
+                                                  _______             ,_______             ,_______                                                       ,_______             ,_______             ,KC_0
+/*      ____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________, */
+    ),
+    [CONF] = LAYOUT_split_3x5_3(
+/*      ____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________, */
+        _______             ,_______              ,_______             ,_______             ,_______                                                      ,_______             ,_______             ,_______             ,_______             ,_______             ,
+/*      ____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________, */
+        _______             ,_______              ,_______             ,_______             ,_______                                                      ,_______             ,_______             ,_______             ,_______             ,_______             ,
+/*      ____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________, */
+        _______             ,_______              ,_______             ,_______             ,_______                                                      ,_______             ,_______             ,_______             ,_______             ,_______             ,
+/*      ____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________, */
+                                                  _______             ,_______             ,_______                                                       ,_______             ,_______             ,_______
+/*      ____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________,____________________, */
     ),
 };
+
+// clang-format on
+void leader_start_user() {
+    // oled_write_P(PSTR("leader key starting\n"), false);
+}
+
+void leader_end_user() {
+    // } else if (leader_sequence_one_key(KC_P)) {
+    //     SEND_STRING(SS_DOWN(X_LCTL) SS_DOWN(X_LALT) SS_TAP(X_P) SS_UP(X_LCTL) SS_UP(X_LALT));
+    // } else if (leader_sequence_two_keys(KC_O, KC_O)) {
+    //     SEND_STRING(SS_DOWN(X_LCTL) SS_DOWN(X_LALT) SS_DOWN(X_LSFT) SS_TAP(X_O) SS_UP(X_LSFT) SS_UP(X_LCTL) SS_UP(X_LALT));
+    // } else if (leader_sequence_two_keys(KC_P, KC_P)) {
+    //     SEND_STRING(SS_DOWN(X_LCTL) SS_DOWN(X_LALT) SS_DOWN(X_LSFT) SS_TAP(X_P) SS_UP(X_LSFT) SS_UP(X_LCTL) SS_UP(X_LALT));
+    // } else if (leader_sequence_one_key(KC_J)) {
+    //     SEND_STRING(SS_DOWN(X_LGUI) SS_TAP(X_C) SS_UP(X_LGUI));
+    // } else if (leader_sequence_two_keys(KC_J, KC_J)) {
+    //     SEND_STRING(SS_DOWN(X_LGUI) SS_TAP(X_V) SS_UP(X_LGUI));
+    // }
+    // oled_write_P(PSTR("leader key ended\n"), false);
+}

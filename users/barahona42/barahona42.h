@@ -7,6 +7,8 @@
 // SFT
 #define LSFT_Z      MT(MOD_LSFT, KC_Z)
 #define LSFT_G      MT(MOD_LSFT, KC_G)
+#define LSFT_MIN    MT(MOD_LSFT, KC_MINUS)
+#define RSFT_MIN    MT(MOD_RSFT, KC_MINUS)
 #define RSFT_H      MT(MOD_RSFT, KC_H)
 #define RSFT_SLSH   MT(MOD_RSFT, KC_SLSH)
 
